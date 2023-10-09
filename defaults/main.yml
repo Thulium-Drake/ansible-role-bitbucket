@@ -10,6 +10,7 @@ bitbucket_user: 'bitbucket'
 
 # Directory where to install the Bitbucket software versions
 bitbucket_install_dir: "/opt/bitbucket-{{ bitbucket_version }}"
+# And the location where it's symlinked to
 bitbucket_symlink_install_dir: '/opt/bitbucket'
 
 # Directory where to store all Bitbucket data
