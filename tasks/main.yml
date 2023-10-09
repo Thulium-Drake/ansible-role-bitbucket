@@ -1,0 +1,79 @@
+---
+- name: 'Include OS-specific variables'
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+- name: 'Ensure dependencies'
+  ansible.builtin.package:
+    name:
+      - 'git'
+      - 'perl'
+      - "{{ bitbucket_java_package }}"
+    state: 'present'
+
+- name: 'Ensure serviceaccount'
+  ansible.builtin.user:
+    name: "{{ bitbucket_user }}"
+    comment: 'Atlassian Bitbucket daemon'
+    home: "{{ bitbucket_home_dir }}"
+    password: '!'
+
+- name: 'Ensure installation directory'
+  ansible.builtin.file:
+    path: "{{ bitbucket_install_dir }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    state: 'directory'
+
+- name: 'Ensure package version installed'
+  ansible.builtin.unarchive:
+    src: "{{ bitbucket_download_url }}"
+    dest: "{{ bitbucket_install_dir }}"
+    remote_src: true
+    extra_opts:
+      - '--strip-components=1'
+    creates: "{{ bitbucket_install_dir }}/README.txt"
+    owner: 'root'
+    group: 'root'
+
+- name: 'Ensure symlink to desired installed version'
+  ansible.builtin.file:
+    src: "{{ bitbucket_install_dir }}"
+    dest: "{{ bitbucket_symlink_install_dir }}"
+    state: 'link'
+
+- name: 'Ensure JRE_HOME'
+  ansible.builtin.lineinfile:
+    path: '/opt/bitbucket/bin/set-jre-home.sh'
+    line: "JRE_HOME={{ bitbucket_java_dir }}"
+    regex: '^# JRE_HOME='
+    state: 'present'
+
+- name: 'Ensure BITBUCKET_HOME'
+  ansible.builtin.lineinfile:
+    path: '/opt/bitbucket/bin/set-bitbucket-home.sh'
+    line: "    BITBUCKET_HOME={{ bitbucket_home_dir }}"
+    regex: 'BITBUCKET_HOME=$'
+    state: 'present'
+
+- name: 'Ensure umask'
+  ansible.builtin.lineinfile:
+    path: '/opt/bitbucket/bin/_start-webapp.sh'
+    line: 'umask 0027'
+    regex: '^# umask 0027'
+    state: 'present'
+
+- name: 'Ensure systemd service unit'
+  ansible.builtin.template:
+    src: 'bitbucket.service.j2'
+    dest: '/etc/systemd/system/bitbucket.service'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Ensure service'
+  ansible.builtin.systemd:
+    name: 'bitbucket'
+    daemon_reload: true
+    state: 'started'
+    enabled: true

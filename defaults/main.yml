@@ -1,0 +1,19 @@
+---
+# Bitbucket version to install
+bitbucket_version: '8.14.0'
+
+# Complete URL to download bitbucket package from
+bitbucket_download_url: "https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-{{ bitbucket_version }}.tar.gz"
+
+# Username of the serviceaccount
+bitbucket_user: 'bitbucket'
+
+# Directory where to install the Bitbucket software versions
+bitbucket_install_dir: "/opt/bitbucket-{{ bitbucket_version }}"
+bitbucket_symlink_install_dir: '/opt/bitbucket'
+
+# Directory where to store all Bitbucket data
+bitbucket_home_dir: '/opt/bitbucket-data'
+
+# Options to pass to the start-bitbucket.sh script
+bitbucket_service_opts: '--no-search'

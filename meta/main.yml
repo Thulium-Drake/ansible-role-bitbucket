@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  author: thulium_drake
+  description: Bitbucket Server, powered by Ansible
+  role_name: bitbucket
+
+  license: GPLv3
+
+  min_ansible_version: '2.10'
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+    - name: EL
+      versions:
+        - '8'
+
+  galaxy_tags:
+    - bitbucket
+    - atlassian
+    - git
+
+dependencies: []

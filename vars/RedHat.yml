@@ -1,0 +1,3 @@
+---
+bitbucket_java_package: 'java-17-openjdk-headless'
+bitbucket_java_dir: '/usr/lib/jvm/jre'

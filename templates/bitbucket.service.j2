@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Atlassian Bitbucket
+After=multi-user.target
+Wants=multi-user.target
+
+[Service]
+Type=forking
+User={{ bitbucket_user }}
+Group={{ bitbucket_user }}
+ExecStart={{ bitbucket_symlink_install_dir }}/bin/start-bitbucket.sh  {{ bitbucket_service_opts }}
+ExecStop={{ bitbucket_symlink_install_dir }}/bin/stop-bitbucket.sh
+PIDFile={{ bitbucket_home_dir }}/log/bitbucket.pid
+
+[Install]
+WantedBy=multi-user.target
