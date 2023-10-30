@@ -34,7 +34,14 @@
       - '--strip-components=1'
     creates: "{{ bitbucket_install_dir }}/README.txt"
     owner: 'root'
-    group: 'root'
+    group: "{{ bitbucket_user }}"
+
+- name: 'Fix symlink to logs directory for Opensearch'
+  ansible.builtin.file:
+    src: "{{ bitbucket_home_dir }}/log"
+    dest: "{{ bitbucket_install_dir }}/opensearch/logs"
+    state: 'link'
+    force: true
 
 - name: 'Ensure symlink to desired installed version'
   ansible.builtin.file:
