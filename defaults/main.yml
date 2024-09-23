@@ -18,3 +18,7 @@ bitbucket_home_dir: '/opt/bitbucket-data'
 
 # Options to pass to the start-bitbucket.sh script
 bitbucket_service_opts: '--no-search'
+
+# JVM Heap size configuration
+bitbucket_jvm_min_memory: '512m'
+bitbucket_jvm_max_memory: '1g'

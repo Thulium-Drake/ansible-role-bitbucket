@@ -72,11 +72,16 @@
 
 - name: 'Ensure systemd service unit'
   ansible.builtin.template:
-    src: 'bitbucket.service.j2'
-    dest: '/etc/systemd/system/bitbucket.service'
+    src: "{{ file['src'] }}"
+    dest: "{{ file['dest'] }}"
     owner: 'root'
     group: 'root'
     mode: '0644'
+  loop:
+    - src: 'defaults-env-bitbucket.j2'
+      dest: '/etc/defaults/bitbucket'
+    - src: 'bitbucket.service.j2'
+      dest: '/etc/systemd/system/bitbucket.service'
 
 - name: 'Ensure service'
   ansible.builtin.systemd:
