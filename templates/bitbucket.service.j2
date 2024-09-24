@@ -7,7 +7,7 @@ Wants=multi-user.target
 
 [Service]
 Type=forking
-EnvironmentFile=-/etc/defaults/bitbucket
+EnvironmentFile=-/etc/default/bitbucket
 User={{ bitbucket_user }}
 Group={{ bitbucket_user }}
 ExecStart={{ bitbucket_symlink_install_dir }}/bin/start-bitbucket.sh  {{ bitbucket_service_opts }}
