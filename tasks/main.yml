@@ -82,6 +82,8 @@
       dest: '/etc/default/bitbucket'
     - src: 'bitbucket.service.j2'
       dest: '/etc/systemd/system/bitbucket.service'
+  loop_control:
+    loop_var: 'file'
 
 - name: 'Ensure service'
   ansible.builtin.systemd:
